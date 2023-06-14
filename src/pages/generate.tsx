@@ -4,10 +4,10 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-// import { Button } from "~/component/Button";
+import { Button } from "~/component/Button";
 import { FormGroup } from "~/component/FormGroup";
 import { Input } from "~/component/Input";
-// import { api } from "~/utils/api";
+import { api } from "~/utils/api";
 
 const colors = [
   "blue",
@@ -40,23 +40,23 @@ const GeneratePage: NextPage = () => {
   const [error, setError] = useState("");
   const [imagesUrl, setImagesUrl] = useState<{ imageUrl: string }[]>([]);
 
-  //   const generateIcon = api.generate.generateIcon.useMutation({
-  //     onSuccess(data) {
-  //       setImagesUrl(data);
-  //     },
-  //     onError(error) {
-  //       setError(error.message);
-  //     },
-  //   });
+  const generateIcon = api.generate.generateIcon.useMutation({
+    onSuccess(data) {
+      setImagesUrl(data);
+    },
+    onError(error) {
+      setError(error.message);
+    },
+  });
 
-  //   function handleFormSubmit(e: React.FormEvent) {
-  //     e.preventDefault();
-  //     setError("");
-  //     generateIcon.mutate({
-  //       ...form,
-  //       numberOfIcons: parseInt(form.numberOfIcons),
-  //     });
-  //   }
+  function handleFormSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    generateIcon.mutate({
+      ...form,
+      numberOfIcons: parseInt(form.numberOfIcons),
+    });
+  }
 
   function updateForm(key: string) {
     return function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -79,7 +79,7 @@ const GeneratePage: NextPage = () => {
         <p className="mb-12 text-2xl">
           Fill out the form below to start generating your icons.
         </p>
-        <form className="flex flex-col gap-4" onSubmit={() => null}>
+        <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <h2 className="text-xl">
             1. Describe what your want your icon to look like.
           </h2>
@@ -158,12 +158,12 @@ const GeneratePage: NextPage = () => {
             </div>
           )}
 
-          {/* <Button
+          <Button
             isLoading={generateIcon.isLoading}
             disabled={generateIcon.isLoading}
           >
             Submit
-          </Button> */}
+          </Button>
         </form>
 
         {imagesUrl.length > 0 && (
